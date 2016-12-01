@@ -1,105 +1,87 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
-// +===============+
-// |--The old way--|
-// +===============+
-//
-// var Main = React.createClass({
-//   propTypes: {},
-//
-//   getDefaultProps: {},
-//
-//   getInitialState: function() {
-//     return {};
-//   },
-//
-//   componentWillMount: function() {
-//     return;
-//   },
-//
-//   componentDidMount: function() {
-//     return;
-//   },
-//
-//   componentWillUpdate: function(nextProps, nextState) {
-//     return;
-//   },
-//
-//   componentDidUpdate:  function(prevProps, prevState) {
-//     return;
-//   },
-//
-//   componentWillReceiveProps: function(nextProps) {
-//     return;
-//   },
-//
-//   componentWillUnmount: function() {
-//     return;
-//   },
-//
-//   shouldComponentUpdate: function(nextProps, nextState) {
-//     return;
-//   },
-//
-//   render: function() {
-//     return(
-//       <h1>Hello World!</h1>
-//     );
-//   }
-// });
-//
-// export default Main
-//
-//
-// +========================+
-// |--Things that are gone--|
-// +========================+
-// - getInitialState
-// - getDefaultProps
-//
-// +===============+
-// |--The new way--|
-// +===============+
-//
-export default class Main extends Component() {
+
+export default class Todo extends Component {
   constructor(props) {
     super(props);
 
-    this.props = props || {};
-    this.state = {};
+    this.state = {
+      tasks: [{ text: 'I am a task' }]
+    };
   }
 
-   componentWillMount: () => {
-     return;
-   }
+  componentWillMount() {
+    debugger;
+  }
 
-   componentDidMount: () => {
-     return;
-   }
+  componentDidMount() {
+    debugger;
+  }
 
-   componentWillUpdate: (nextProps, nextState) => {
-     return;
-   }
+  componentWillReceiveProps() {
+    debugger;
+  }
 
-   componentDidUpdate:  (prevProps, prevState) => {
-     return;
-   }
+  componentWillUpdate(nextProps) {
+    debugger;
+  }
 
-   componentWillReceiveProps: (nextProps) => {
-     return;
-   }
+  componentDidUpdate() {
+    debugger;
+  }
 
-   componentWillUnmount: () => {
-     return;
-   }
+  shouldComponentUpdate(nextProps, nextState) {
+    debugger;
+  }
 
-   shouldComponentUpdate: (nextProps, nextState) => {
-     return;
-   }
+  getTasks() {
+    /*
+    Challenge!
+    Make tasks their own components such that you're pushing a <Task> onto the array
+    instead of an <li>
+    */
+    let nodes = [];
+    this.state.tasks.forEach((task) => {
+      nodes.push(
+        <li>{ task.text }</li>
+      );
+    });
+    return nodes;
+  }
 
-   render: () => {
-     return(
-       <h1>Hello World!</h1>
-     );
-   }
+  addTask(event) {
+    this.setState(
+      {
+        tasks: this.state.tasks.concat(
+          { text: this.refs.myInput.value }
+        )
+      }, () => {
+        this.setState({ inputText: '' });
+      }
+    );
+  }
+
+  render() {
+    if (this.state.tasks > 3) {
+      return (
+        <div></div>
+      );
+    } else {
+      return(
+        <div>
+          <ul>
+            { this.getTasks() }
+          </ul>
+          <input type="text" ref="myInput" />
+          <input type="button" value="add thing" onClick={this.addTask.bind(this)} />
+        </div>
+      );
+    }
+  }
 }
+
+ReactDOM.render(
+  React.createElement(Todo),
+  document.getElementById("main")
+);
